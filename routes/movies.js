@@ -11,7 +11,7 @@ const MoviesController = require("../controllers/MoviesController")
 router.get("/", MoviesController.index);
 
 // show route
-// router.get("/:id", MoviesController.show);
+router.get("/:id", MoviesController.show);
 
 
 module.exports = router;
