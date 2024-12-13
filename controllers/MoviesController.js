@@ -73,7 +73,7 @@ function review(req, res) {
 
     const { username, review, vote } = req.body
 
-    const sql = `INSERT INTO reviews (name, vote, text, movie_id, created_at, updated_at) VALUES (?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`
+    const sql = `INSERT INTO reviews (name, vote, text, movie_id, created_at) VALUES (?,?,?,?,CURRENT_TIMESTAMP)`
 
     connection.query(sql, [username, vote, review, movie_id], (err, result) => {
         if (err) return res.status(500).json({ error: err })
