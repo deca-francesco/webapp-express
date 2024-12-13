@@ -1,7 +1,7 @@
 // import connection
 const connection = require("../db/connection")
 
-// index route
+// index
 function index(req, res) {
     // query DB for all the movies
     const sql = "SELECT * FROM movies"
@@ -23,7 +23,7 @@ function index(req, res) {
 
 }
 
-
+// show
 function show(req, res) {
     // get the movie ID from the params
     const id = req.params.id
@@ -36,6 +36,7 @@ function show(req, res) {
     JOIN movies 
     ON movies.id = reviews.movie_id
     WHERE reviews.movie_id = ?
+    ORDER BY reviews.created_at DESC
     `
     // execute the sql query for movie
     connection.query(movieSql, [Number(id)], (err, results) => {
@@ -66,8 +67,22 @@ function show(req, res) {
     })
 }
 
+// review
+function review(req, res) {
+    const movie_id = Number(req.params.id)
+
+    const { username, review, vote } = req.body
+
+    const sql = `INSERT INTO reviews (name, vote, text, movie_id, created_at, updated_at) VALUES (?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`
+
+    connection.query(sql, [username, vote, review, movie_id], (err, result) => {
+        if (err) return res.status(500).json({ error: err })
+        return res.status(201).json({ success: true })
+    })
+}
 
 module.exports = {
     index,
-    show
+    show,
+    review
 }
